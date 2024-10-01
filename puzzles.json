@@ -162,8 +162,8 @@
 {
 "id": 33,
 "title": "THE SHATTERED CLOCK",
-"question": "A clock with the hours round the face in Roman block numerals, as illustrated in the sketch fell down, and the dial broke into four parts. The numerals in each part in every case summed to a total of 20. Can you show how the four parts of the clock face was broken?,
-"image": "images/sdevi_q33.png"
+"image": "images/sdevi_q33.png",
+"question": "A clock with the hours round the face in Roman block numerals, as illustrated in the sketch fell down, and the dial broke into four parts. The numerals in each part in every case summed to a total of 20. Can you show how the four parts of the clock face was broken?"
 },
 {
 "id": 34,
@@ -449,7 +449,7 @@
 {
 "id": 90,
 "title": "THE SIX MATCHES",
-"image": 'images/sdevi_q90.png",
+"image": "images/sdevi_q90.png",
 "question": "Shown in the sketch are six matchsticks. Can you rearrange them to make nothing? "
 },
 {
