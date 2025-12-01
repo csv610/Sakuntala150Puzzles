@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json
 import base64
-import argparse
+
 from litellm import completion
 from tqdm import tqdm
 
@@ -98,32 +98,5 @@ def solve_puzzles(output_filename='puzzles_answer.json'):
 
     print(f"\nAnswers saved to {output_filename}")
 
-def main():
-    """Main entry point for the puzzle solver CLI"""
-    parser = argparse.ArgumentParser(
-        description='Solve mathematical puzzles using Gemini AI',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  %(prog)s                              # Save answers to puzzles_answer.json
-  %(prog)s --input custom_puzzles.json  # Load from custom file
-  %(prog)s --output results.json        # Save to custom output file
-        """
-    )
-
-    parser.add_argument(
-        '--input',
-        default='puzzles.json',
-        help='Input JSON file with puzzles (default: puzzles.json)'
-    )
-    parser.add_argument(
-        '--output',
-        default='puzzles_answer.json',
-        help='Output JSON file for answers (default: puzzles_answer.json)'
-    )
-
-    args = parser.parse_args()
-    solve_puzzles(args.output)
-
 if __name__ == "__main__":
-    main()
+    solve_puzzles()
