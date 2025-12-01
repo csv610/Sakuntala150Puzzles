@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import base64
+import argparse
 from litellm import completion
 from tqdm import tqdm
 
@@ -72,41 +73,57 @@ def get_answer(puzzle):
     except Exception as e:
         return f"Error getting answer: {str(e)}"
 
-def print_puzzle(puzzle):
-    """Print puzzle question and answer"""
-    print(f"\nQuestion #{puzzle['id']}: {puzzle['title']}")
-    print("-" * 60)
-    print(puzzle['question'])
-    print()
-    print("Answer:")
-    answer = get_answer(puzzle)
-    print(answer)
-    print()
-
-def display_all_puzzles():
-    """Display all puzzles with their answers"""
-    puzzles = load_puzzles()
-    for puzzle in puzzles:
-        print_puzzle(puzzle)
-
-def save_answers_to_file(output_filename='puzzles_answer.json'):
+def solve_puzzles(output_filename='puzzles_answer.json'):
     """Load puzzles, get answers, and save to JSON file"""
     puzzles = load_puzzles()
-    answers = []
-
-    for puzzle in tqdm(puzzles, desc="Processing puzzles"):
-        answer_data = {
-            'id': puzzle['id'],
-            'title': puzzle['title'],
-            'question': puzzle['question'],
-            'answer': get_answer(puzzle)
-        }
-        answers.append(answer_data)
 
     with open(output_filename, 'w') as f:
-        json.dump(answers, f, indent=2)
+        f.write('[\n')
+
+        for idx, puzzle in enumerate(tqdm(puzzles, desc="Processing puzzles")):
+            answer_data = {
+                'id': puzzle['id'],
+                'title': puzzle['title'],
+                'question': puzzle['question'],
+                'answer': get_answer(puzzle)
+            }
+            json.dump(answer_data, f, indent=2)
+
+            if idx < len(puzzles) - 1:
+                f.write(',\n')
+            else:
+                f.write('\n')
+
+        f.write(']')
 
     print(f"\nAnswers saved to {output_filename}")
 
+def main():
+    """Main entry point for the puzzle solver CLI"""
+    parser = argparse.ArgumentParser(
+        description='Solve mathematical puzzles using Gemini AI',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  %(prog)s                              # Save answers to puzzles_answer.json
+  %(prog)s --input custom_puzzles.json  # Load from custom file
+  %(prog)s --output results.json        # Save to custom output file
+        """
+    )
+
+    parser.add_argument(
+        '--input',
+        default='puzzles.json',
+        help='Input JSON file with puzzles (default: puzzles.json)'
+    )
+    parser.add_argument(
+        '--output',
+        default='puzzles_answer.json',
+        help='Output JSON file for answers (default: puzzles_answer.json)'
+    )
+
+    args = parser.parse_args()
+    solve_puzzles(args.output)
+
 if __name__ == "__main__":
-    save_answers_to_file()
+    main()
