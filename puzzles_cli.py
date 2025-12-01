@@ -89,7 +89,7 @@ def display_all_puzzles():
     for puzzle in puzzles:
         print_puzzle(puzzle)
 
-def save_answers_to_file(output_filename='puzzle_answer.json'):
+def save_answers_to_file(output_filename='puzzles_answer.json'):
     """Load puzzles, get answers, and save to JSON file"""
     puzzles = load_puzzles()
     answers = []

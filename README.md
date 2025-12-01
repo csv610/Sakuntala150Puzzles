@@ -12,7 +12,7 @@ This project reads mathematical puzzles from a JSON file and uses the Gemini 2.5
 - Supports image-based puzzles (embedded as base64)
 - Uses Google's Gemini 2.5 Flash model for solving
 - Displays progress with a progress bar (tqdm)
-- Saves answers to `puzzle_answer.json`
+- Saves answers to `puzzles_answer.json`
 
 ## Requirements
 
@@ -43,7 +43,7 @@ python puzzles_cli.py
 This will:
 1. Load puzzles from `puzzles.json`
 2. Process each puzzle with Gemini AI
-3. Save the results to `puzzle_answer.json`
+3. Save the results to `puzzles_answer.json`
 
 ## File Structure
 
@@ -59,7 +59,7 @@ This will:
   ]
   ```
 
-- `puzzle_answer.json` - Output file containing puzzles with AI-generated answers:
+- `puzzles_answer.json` - Output file containing puzzles with AI-generated answers:
   ```json
   [
     {
