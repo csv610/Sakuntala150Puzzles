@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-import json
 import base64
+import json
 
 from litellm import completion
 from tqdm import tqdm
 
+
 def load_puzzles(filename='puzzles.json'):
-    with open(filename, 'r') as f:
+    with open(filename) as f:
         return json.load(f)
 
 def get_mime_type(image_path):
@@ -23,10 +24,14 @@ def get_mime_type(image_path):
 
 def encode_image(image_path):
     """Encode image to base64 data URL"""
-    with open(image_path, 'rb') as img_file:
-        image_data = base64.standard_b64encode(img_file.read()).decode('utf-8')
-        mime_type = get_mime_type(image_path)
-        return f"data:{mime_type};base64,{image_data}"
+    try:
+        with open(image_path, 'rb') as img_file:
+            image_data = base64.b64encode(img_file.read()).decode('utf-8')
+            mime_type = get_mime_type(image_path)
+            return f"data:{mime_type};base64,{image_data}"
+    except (OSError, FileNotFoundError) as e:
+        print(f"Warning: Could not load image '{image_path}': {e}")
+        return None
 
 def build_system_prompt():
     """Build system prompt for mathematical puzzle solving"""
@@ -46,10 +51,11 @@ def build_message_content(puzzle):
 
     if 'image' in puzzle and puzzle['image']:
         image_url = encode_image(puzzle['image'])
-        content.append({
-            "type": "image_url",
-            "image_url": {"url": image_url}
-        })
+        if image_url:
+            content.append({
+                "type": "image_url",
+                "image_url": {"url": image_url}
+            })
 
     if 'question' in puzzle:
         content.append({"type": "text", "text": puzzle['question']})
